@@ -88,7 +88,7 @@ export default {
 			let gst = 0;
 			for(var i in goods){
 				if(goods[i]['gst']==1){
-					gst += goods[i]['danjia'] - goods[i]['danjia']/1.1;
+					gst += goods[i]['number']*(goods[i]['danjia'] - goods[i]['danjia']/1.1);
 				}
 			}
 			this.info.gst = gst.toFixed(2);

@@ -26,7 +26,13 @@
 						prop="price1"
 						label="会员价"
 						width="80">
-						</el-table-column>	
+						</el-table-column>
+						<el-table-column
+                        prop="stock"					
+                        label="库存"
+                        width="60"
+                        >
+                        </el-table-column>
 					</el-table>
 				</div>
 			</el-aside>
@@ -145,7 +151,7 @@
                         <template scope="scope">
                             <el-input @blur="changePrice(scope.row)" v-model="scope.row.price1" size="mini"></el-input>
                         </template>
-                        </el-table-column>
+                        </el-table-column>						
                         <el-table-column label="商品数量" width="150">
                             <template scope="scope">
                                 <el-input-number @blur="changeNumber(scope.row)" @change="changeNumber(scope.row)" size="mini" v-model="scope.row.number" :min="1" ></el-input-number>
@@ -323,7 +329,9 @@ export default {
 			let that = this;
 			let temp = [];
 			for (var i = 0; i < that.allGoods.length; i++) {
-				if (keyword==that.allGoods[i]['id'] || that.allGoods[i]['name'].indexOf(keyword) != -1 || that.allGoods[i]['keyword'].indexOf(keyword) != -1){
+				keyword = keyword.toLowerCase();
+				let goodsName = that.allGoods[i]['name'].toLowerCase();
+				if (keyword==that.allGoods[i]['id'] || goodsName.indexOf(keyword) != -1 || that.allGoods[i]['keyword'].indexOf(keyword) != -1){
 					temp.push(that.allGoods[i]);
 				}
 			}
@@ -335,6 +343,7 @@ export default {
 			data.id = row.id;
 			data.name = row.name;
 			data.goodsID = row.goodsID;
+			data.stock = row.stock;
 			data.goodsNumber = row.goodsNumber;
 			data.short = row.short;
 			data.wuliuWeight = row.wuliuWeight;
@@ -343,7 +352,7 @@ export default {
 			data.gst = row.gst;
 			data.number = row.number;
 			data.money = row.money;
-			data.itemType = row.itemType;
+			data.itemType = row.itemType;			
 			that.cart.push(data);
 			that.getTotalPrice();
         },
@@ -406,7 +415,7 @@ export default {
 				}else{
 					danjia = that.cart[i]['price'];
 				}
-				if (this.dai==true){
+				if (this.dai==true && that.cart[i]['gst']==1){
 					danjia = (danjia*1.1).toFixed(2);	
 				}
 				that.cart[i]['danjia'] = danjia;		
