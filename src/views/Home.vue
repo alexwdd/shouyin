@@ -127,18 +127,6 @@
                         >
                         </el-table-column>
 						<el-table-column
-                        prop="money"					
-                        label="小计"
-                        width="100"
-                        >
-                        </el-table-column>
-                        <el-table-column
-                        prop="danjia"					
-                        label="带走价"
-                        width="100"
-                        >
-                        </el-table-column>
-                        <el-table-column
                         label="价格"
                         width="100">
                         <template scope="scope">
@@ -152,6 +140,18 @@
                             <el-input @blur="changePrice(scope.row)" v-model="scope.row.price1" size="mini"></el-input>
                         </template>
                         </el-table-column>						
+                        <el-table-column
+                        prop="danjia"					
+                        label="带走价"
+                        width="100"
+                        >
+                        </el-table-column>   
+						<el-table-column
+                        prop="money"					
+                        label="小计"
+                        width="100"
+                        >
+                        </el-table-column>                     						
                         <el-table-column label="商品数量" width="150">
                             <template scope="scope">
                                 <el-input-number @blur="changeNumber(scope.row)" @change="changeNumber(scope.row)" size="mini" v-model="scope.row.number" :min="1" ></el-input-number>
