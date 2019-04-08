@@ -51,8 +51,7 @@
 					</el-col>
 					<el-col :span="6">${{info.total}}</el-col>
 					<el-col :span="12">
-						<p style="text-align: right;">Sub Total:${{info.total}}</p>
-						<p style="text-align: right;">Total Amount Including GST:${{info.gst}}</p>
+						<p style="text-align: right;">Total Amount Including GST:${{info.total}}</p>
 						<p style="text-align: right;">GST Included:${{info.gst}}</p>
 					</el-col>
 				</el-row> 

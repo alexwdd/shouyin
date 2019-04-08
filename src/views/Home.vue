@@ -31,6 +31,14 @@
                         prop="stock"					
                         label="库存"
                         width="60"
+						v-if="stock=='web'"
+                        >
+                        </el-table-column>
+						<el-table-column
+                        prop="stock1"					
+                        label="库存"
+                        width="60"
+						v-if="stock=='shop'"
                         >
                         </el-table-column>
 					</el-table>
@@ -175,7 +183,7 @@
                 </el-main>
                 <el-footer height="100px">
                     <el-row :gutter="20">
-                        <el-col :span="6">
+                        <el-col :span="5">
                             <div class="moneyBox">
                                 <li>
 									<label>应收金额</label>
@@ -191,7 +199,7 @@
 								</li>			
                             </div>						
                         </el-col>
-                        <el-col :span="10">
+                        <el-col :span="11">
                             <div class="action" style="margin-top: 40px">
 								<li>
                                 会员价
@@ -264,10 +272,10 @@ export default {
 			member:'',
 			stockOpt: [{
               value: 'shop',
-              label: '店铺仓库'
+              label: '门店'
             }, {
               value: 'web',
-              label: '网站仓库'
+              label: '仓库'
             }]
         };
     },
@@ -331,7 +339,9 @@ export default {
 			for (var i = 0; i < that.allGoods.length; i++) {
 				keyword = keyword.toLowerCase();
 				let goodsName = that.allGoods[i]['name'].toLowerCase();
-				if (keyword==that.allGoods[i]['id'] || goodsName.indexOf(keyword) != -1 || that.allGoods[i]['keyword'].indexOf(keyword) != -1){
+				let goodsShort = that.allGoods[i]['short'].toLowerCase();
+				let goodsKeyword = that.allGoods[i]['keyword'].toLowerCase();
+				if (keyword==that.allGoods[i]['id'] || goodsName.indexOf(keyword) != -1 || goodsShort.indexOf(keyword) != -1 || goodsKeyword.indexOf(keyword) != -1){
 					temp.push(that.allGoods[i]);
 				}
 			}
@@ -344,11 +354,13 @@ export default {
 			data.name = row.name;
 			data.goodsID = row.goodsID;
 			data.stock = row.stock;
+			data.stock1 = row.stock1;
 			data.goodsNumber = row.goodsNumber;
 			data.short = row.short;
 			data.wuliuWeight = row.wuliuWeight;
 			data.price = row.price;
 			data.price1 = row.price1;
+			data.inprice = row.inprice;
 			data.gst = row.gst;
 			data.number = row.number;
 			data.money = row.money;
