@@ -4,6 +4,7 @@ import Home from "./views/Home";
 import Login from "./views/Login";
 import Xiaopiao from "./views/Xiaopiao";
 import Dapiao from "./views/Dapiao";
+import Formal from "./views/Formal";
 import History from "./views/History";
 import Log from "./views/Log";
 
@@ -31,6 +32,12 @@ export default new Router({
             name: "xiaopiao",
             meta:{index:1,top:false},
             component: Xiaopiao
+        },
+        {
+            path: "/formal",
+            name: "formal",
+            meta:{index:1,top:false},
+            component: Formal
         },
         {
             path: "/dapiao",

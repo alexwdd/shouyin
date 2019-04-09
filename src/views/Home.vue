@@ -230,6 +230,7 @@
                         <el-col :span="8">
                             <div class="action">
                                 <el-button plain type="primary" @click="printSmall" :disabled="isDisabled">打印小票</el-button>
+                                <el-button plain type="primary" @click="printFormal" :disabled="isDisabled">正式票据</el-button>
                                 <el-button plain type="primary" @click="printA4" :disabled="isDisabled">打印A4</el-button>
                                 <el-button type="primary" @click="doSubmit" :disabled="isDisabled">保存</el-button>
                             </div>
@@ -352,6 +353,7 @@ export default {
 			let data = {};
 			data.id = row.id;
 			data.name = row.name;
+			data.en = row.en;
 			data.goodsID = row.goodsID;
 			data.stock = row.stock;
 			data.stock1 = row.stock1;
@@ -485,6 +487,19 @@ export default {
 				return false;
 			}
 			this.$router.push({ path:'/xiaopiao'});
+		},
+		printFormal(){
+			if (this.payType==''){
+				this.$alert('请选择收款方式',{type:'error'});
+				return false;
+			}
+			if (this.$store.state.order.No=='' || this.$store.state.order.No==undefined){
+				this.$alert('请先打印小票',{
+					type:'error'
+				});
+				return false;
+			}
+			this.$router.push({ path:'/formal'});
 		},
 		printA4(){
 			if (this.payType==''){
