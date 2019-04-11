@@ -11,7 +11,7 @@
 			<li class="col4">总计</li>
 		</div>	
 		<div class="list" v-for="item in info.goods">
-			<li class="col1">{{item.short}}</li>
+			<li class="col1">{{item.short}}<span v-if="item.goodsNumber>1">*{{item.goodsNumber}}</span></li>
 			<li class="col2">${{item.danjia}}</li>
 			<li class="col3">{{item.number}}</li>
 			<li class="col4">${{item.money}}</li>
