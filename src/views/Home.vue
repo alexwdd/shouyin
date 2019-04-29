@@ -193,6 +193,10 @@
 									<label>商品金额</label>
                                 	<span>{{goodsMoney}}</span>
 								</li>
+								<li>
+									<label>总重量</label>
+                                	<span>{{totalWeight}}</span>
+								</li>
                                 <li>
 									<label>邮费</label>
                                 	<span>{{yunfei}}</span>
@@ -257,6 +261,7 @@ export default {
 			cart:[],	//购物车
 			order:[],
 			total:0.00,
+			totalWeight:0.00,
 			goodsMoney:0.00,
 			yunfei:0.00,
 			dai:false,
@@ -422,8 +427,10 @@ export default {
 			let danjia = 0;
 			let tempMoney = 0;
 			let gst = 0;
+			let totalWeight = 0;
 			for(var i in that.cart){
 				that.cart[i]['weight'] = (that.cart[i]['wuliuWeight']*that.cart[i]['number']).toFixed(2);
+				totalWeight += that.cart[i]['wuliuWeight']*that.cart[i]['number'];
 				if (this.vip==true){
 					danjia = that.cart[i]['price1'];
 				}else{
@@ -445,7 +452,8 @@ export default {
 				}
 			}
 	        total = money + yunfei;
-	        that.gst = gst.toFixed(2);
+			that.gst = gst.toFixed(2);
+			that.totalWeight = totalWeight.toFixed(2);
 	        that.yunfei = yunfei.toFixed(2);
 	        that.goodsMoney = money.toFixed(2);
 	        that.total = total.toFixed(2);
@@ -683,8 +691,8 @@ export default {
 .el-main{height: 100%; box-sizing: border-box;}
 .el-footer{box-sizing: border-box; background: #f1f1f1}
 .main{width: 100%; padding: 10px; box-sizing: border-box;}
-.moneyBox{clear: both; padding-top: 10px}
-.moneyBox li{clear: both; width: 100%; line-height: 27px}
+.moneyBox{clear: both; padding-top: 5px}
+.moneyBox li{clear: both; width: 100%; line-height: 23px}
 .moneyBox li label{float: left; font-size: 12px; width: 80px; color: #666}
 
 .action{text-align: right; margin-top: 30px;}

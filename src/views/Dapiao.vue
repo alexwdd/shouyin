@@ -37,7 +37,7 @@
 				</div>
 				<div class="list" v-for="(item, key) in info.goods">
 					<li class="col1">{{key+1}}</li>
-					<li class="col2">{{item.name}}</li>
+					<li class="col2">{{item.en}}</li>
 					<li class="col3">{{item.number}}</li>
 					<li class="col4">${{item.danjia}}</li>
 					<li class="col5" v-if="item.gst==1">GST</li>

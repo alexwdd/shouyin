@@ -19,7 +19,7 @@
 
 		<div class="line"></div>
 		<div class="total">
-			<div class="user">casher : {{user.username}}</div>
+			<div class="user">cashier : {{user.username}}</div>
 			<div class="money">${{info.total}}</div>	
 		</div>
 	</div>
