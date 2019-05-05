@@ -216,7 +216,7 @@
 								</li>
 
 								<li>
-								<el-select v-model="stock" placeholder="请选择仓库" size="mini" style="width:100px">
+								<el-select v-model="stock" placeholder="请选择仓库" size="mini" style="width:100px" @change="setStock">
 									<el-option
 									v-for="item in stockOpt"
 									:key="item.value"
@@ -302,6 +302,9 @@ export default {
 		}
     },
     created() {
+		if(window.sessionStorage.getItem('stock')){
+			this.stock = window.sessionStorage.getItem('stock');
+		}
         this.init();
     },
     methods: {
@@ -338,7 +341,10 @@ export default {
 					this.$alert(res.desc,{type:'error'});
 				}
             })
-        },
+		},
+		setStock(value){
+			window.sessionStorage.setItem('stock', value);
+		},
         searchGoods(keyword){
 			let that = this;
 			let temp = [];
