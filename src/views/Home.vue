@@ -178,8 +178,10 @@
                         <div slot="header" class="clearfix">
                             <span>支付方式</span>
                         </div>
-                        <el-radio :disabled="item.checked" v-for="item in pay_opt" v-model="payType" @change="getTotalPrice" :label="item.name" :key="item.id">{{item.name}}</el-radio>
-                    </el-card>
+						<div class="payType" v-for="item in pay_opt" v-if="!item.checked">
+							{{item.name}} <el-input type="number" placeholder="金额" style="width:150px" v-model="item.money"></el-input>
+						</div>
+                    </el-card>	
                 </el-main>
                 <el-footer height="100px">
                     <el-row :gutter="20">
@@ -269,7 +271,7 @@ export default {
 			dialogTableVisible:false,
 			dialogUserVisible:false,
 			isDisabled:true,
-			payType:'',
+			//payType:'',
 			pay_opt: [], //支付方式选项
 			invoiced:[],
 			invoiceList:[],
@@ -472,7 +474,7 @@ export default {
 	        let data = {
 	        	'goods':that.cart,
 	        	'vip':that.vip,
-	        	'payType':that.payType,
+	        	'payType':that.pay_opt,
 	        	'total':that.total,
 	        	'yunfei':that.yunfei,
 	        	'goodsMoney':that.goodsMoney,
@@ -496,15 +498,27 @@ export default {
         		});
 		},
 		printSmall(){
-			if (this.payType==''){
-				this.$alert('请选择收款方式',{type:'error'});
+			let total= 0;
+			for(var i in this.pay_opt){
+				if(this.pay_opt[i]['money']!=''){
+					total += parseFloat(this.pay_opt[i]['money']);
+				}
+			}
+			if (total != this.total){
+				this.$alert('请输入正确收款金额',{type:'error'});
 				return false;
 			}
 			this.$router.push({ path:'/xiaopiao'});
 		},
 		printFormal(){
-			if (this.payType==''){
-				this.$alert('请选择收款方式',{type:'error'});
+			let total= 0;
+			for(var i in this.pay_opt){
+				if(this.pay_opt[i]['money']!=''){
+					total += parseFloat(this.pay_opt[i]['money']);
+				}
+			}
+			if (total != this.total){
+				this.$alert('请输入正确收款金额',{type:'error'});
 				return false;
 			}
 			if (this.$store.state.order.No=='' || this.$store.state.order.No==undefined){
@@ -516,8 +530,14 @@ export default {
 			this.$router.push({ path:'/formal'});
 		},
 		printA4(){
-			if (this.payType==''){
-				this.$alert('请选择收款方式',{type:'error'});
+			let total= 0;
+			for(var i in this.pay_opt){
+				if(this.pay_opt[i]['money']!=''){
+					total += parseFloat(this.pay_opt[i]['money']);
+				}
+			}
+			if (total != this.total){
+				this.$alert('请输入正确收款金额',{type:'error'});
 				return false;
 			}
 			if (this.$store.state.order.No=='' || this.$store.state.order.No==undefined){
@@ -529,8 +549,14 @@ export default {
 			this.$router.push({ path:'/dapiao'});
 		},
 		doSubmit(){
-			if (this.payType==''){
-				this.$alert('请选择收款方式',{type:'error'});
+			let total= 0;
+			for(var i in this.pay_opt){
+				if(this.pay_opt[i]['money']!=''){
+					total += parseFloat(this.pay_opt[i]['money']);
+				}
+			}
+			if (total != this.total){
+				this.$alert('请输入正确收款金额',{type:'error'});
 				return false;
 			}
 			if (this.$store.state.order.No=='' || this.$store.state.order.No==undefined){
@@ -710,4 +736,5 @@ export default {
 .topBar li{padding-right: 20px; display: inline-block; list-style:none;}
 .topMenu{clear: both; text-align: left; margin-top:10px; text-align: center;}
 .topMenu li{list-style: none;display: inline-block; margin:0 10px;}
+.payType{ margin-bottom: 5px; clear: both; overflow: hidden;}
 </style>

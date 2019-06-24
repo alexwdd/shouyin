@@ -47,7 +47,8 @@
 				<div class="line" style="margin-top:50px"></div> 
 				<el-row :gutter="20">
 					<el-col :span="6">
-						Payment Method<br/>{{info.payType}}
+						Payment Method<br/>
+						<p v-for="vo in info.payType" v-if="vo.money!=''">{{vo.name}}:${{vo.money}}</p>
 					</el-col>
 					<el-col :span="6">${{info.total}}</el-col>
 					<el-col :span="12">
