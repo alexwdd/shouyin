@@ -177,10 +177,20 @@
                     <el-card class="box-card" style="margin-top: 15px">
                         <div slot="header" class="clearfix">
                             <span>支付方式</span>
+							<div style="float:right">
+							<el-checkbox v-model="multPay" @change="getTotalPrice">组合支付</el-checkbox>
+							</div>
                         </div>
-						<div class="payType" v-for="item in pay_opt" v-if="!item.checked">
+
+						<div v-show="!multPay">
+						<el-radio v-if="!item.checked" v-for="item in pay_opt" v-model="payType" @change="getTotalPrice" :label="item.name" :key="item.id">{{item.name}}</el-radio>
+						</div>
+			
+						<div class="payType" v-show="multPay" v-for="item in pay_opt" v-if="!item.checked" :key="item.id">
 							{{item.name}} <el-input type="number" placeholder="金额" style="width:150px" v-model="item.money"></el-input>
 						</div>
+				
+
                     </el-card>	
                 </el-main>
                 <el-footer height="100px">
@@ -271,7 +281,8 @@ export default {
 			dialogTableVisible:false,
 			dialogUserVisible:false,
 			isDisabled:true,
-			//payType:'',
+			multPay:false,
+			payType:'',
 			pay_opt: [], //支付方式选项
 			invoiced:[],
 			invoiceList:[],
@@ -436,6 +447,7 @@ export default {
 			let tempMoney = 0;
 			let gst = 0;
 			let totalWeight = 0;
+
 			for(var i in that.cart){
 				that.cart[i]['weight'] = (that.cart[i]['wuliuWeight']*that.cart[i]['number']).toFixed(2);
 				totalWeight += that.cart[i]['wuliuWeight']*that.cart[i]['number'];
@@ -471,6 +483,17 @@ export default {
 	        }else{
 	        	that.isDisabled = true;
 			}
+
+			if(!that.multPay){
+				for(var i in that.pay_opt){
+					if(that.pay_opt[i]['name']==that.payType){
+						that.pay_opt[i]['money'] = that.total;
+					}else{
+						that.pay_opt[i]['money'] = '';
+					}
+				}
+			}
+
 	        let data = {
 	        	'goods':that.cart,
 	        	'vip':that.vip,
