@@ -7,6 +7,7 @@ export default new Vuex.Store({
 	state: {
 		token:window.sessionStorage.getItem('token'),
 		user:window.sessionStorage.getItem('userinfo'),
+		member:'',
 		order:{},
 		invoiced:{},
 		flag:false,
@@ -26,6 +27,12 @@ export default new Vuex.Store({
 			state.user = [];
 			window.sessionStorage.removeItem('token');
 			window.sessionStorage.removeItem('userinfo');    		
+		},
+		SET_MEMBER(state,data) {
+			state.member = data;
+		},
+		CLEAR_MEMBER(state) {
+			state.member = "";
 		},
 		SET_ORDER(state,data) {
 			state.order = data;

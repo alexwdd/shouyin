@@ -290,11 +290,11 @@ export default {
 			stock:'shop',
 			member:'',
 			stockOpt: [{
-              value: 'shop',
-              label: '门店'
-            }, {
               value: 'web',
               label: '仓库'
+            },{
+              value: 'shop',
+              label: '门店'
             }]
         };
     },
@@ -356,7 +356,7 @@ export default {
             })
 		},
 		setStock(value){
-			window.sessionStorage.setItem('stock', value);
+			//window.sessionStorage.setItem('stock', value);
 		},
         searchGoods(keyword){
 			let that = this;
@@ -528,7 +528,11 @@ export default {
 				}
 			}
 			if (total != this.total){
-				this.$alert('请输入正确收款金额',{type:'error'});
+				if(this.multPay){
+					this.$alert('请输入正确收款金额',{type:'error'});
+				}else{
+					this.$alert('请选择收款方式',{type:'error'});
+				}
 				return false;
 			}
 			this.$router.push({ path:'/xiaopiao'});
@@ -541,7 +545,11 @@ export default {
 				}
 			}
 			if (total != this.total){
-				this.$alert('请输入正确收款金额',{type:'error'});
+				if(this.multPay){
+					this.$alert('请输入正确收款金额',{type:'error'});
+				}else{
+					this.$alert('请选择收款方式',{type:'error'});
+				}				
 				return false;
 			}
 			if (this.$store.state.order.No=='' || this.$store.state.order.No==undefined){
@@ -560,7 +568,11 @@ export default {
 				}
 			}
 			if (total != this.total){
-				this.$alert('请输入正确收款金额',{type:'error'});
+				if(this.multPay){
+					this.$alert('请输入正确收款金额',{type:'error'});
+				}else{
+					this.$alert('请选择收款方式',{type:'error'});
+				}
 				return false;
 			}
 			if (this.$store.state.order.No=='' || this.$store.state.order.No==undefined){
@@ -579,7 +591,11 @@ export default {
 				}
 			}
 			if (total != this.total){
-				this.$alert('请输入正确收款金额',{type:'error'});
+				if(this.multPay){
+					this.$alert('请输入正确收款金额',{type:'error'});
+				}else{
+					this.$alert('请选择收款方式',{type:'error'});
+				}
 				return false;
 			}
 			if (this.$store.state.order.No=='' || this.$store.state.order.No==undefined){
@@ -641,6 +657,7 @@ export default {
 					}
                     
 					this.member = res.body.user;
+					this.$store.commit('SET_MEMBER',this.member);
 					if(this.member.group=='会员用户'){
 						this.vip = true;
 					}else{

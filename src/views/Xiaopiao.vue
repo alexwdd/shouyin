@@ -9,14 +9,17 @@
 			<li class="col2">价格</li>
 			<li class="col3">数量</li>
 			<li class="col4">总计</li>
-		</div>	
+		</div>
 		<div class="list" v-for="item in info.goods">
 			<li class="col1">{{item.short}}<span v-if="item.goodsNumber>1">*{{item.goodsNumber}}</span></li>
 			<li class="col2">${{item.danjia}}</li>
 			<li class="col3">{{item.number}}</li>
 			<li class="col4">${{item.money}}</li>
 		</div>
-
+		<div class="total" style="margin-top:30px" v-if="flag">
+			<div class="user">会员余额</div>
+			<div class="money">${{member.money}}</div>	
+		</div>
 		<div class="line"></div>
 		<div class="total">
 			<div class="user">cashier : {{user.username}}</div>
@@ -33,6 +36,8 @@ export default {
 	data(){
 		return {
 			user:{},
+			member:{},
+			flag:false,
 			info:{}
 		}
 	},
@@ -49,6 +54,7 @@ export default {
 	},
 	methods:{
 		getOrderInfo(){
+			this.flag = false;
             var loadding = Loading.service();
             let data = {token:this.$store.state.token};
             this.$http.post('/getXiaopiaoNo',data).then((res)=>{
@@ -57,6 +63,13 @@ export default {
                 if (res.code==1){
                     let No = res.body.No;
 					this.info = this.$store.state.order;
+					for(var i in this.info.payType){
+						if(this.info.payType[i]['name']=='余额支付' && this.info.payType[i]['money']!=''){
+							this.flag = true;
+						}
+					}
+					this.member = this.$store.state.member;
+					//console.log(this.member);
 					this.info.No = No;
 					this.info.time = new Date();
 					this.$store.commit('SET_ORDER_NO',No);
@@ -87,7 +100,7 @@ export default {
 .col3{width: 15%; text-align: right;}
 .col4{width: 25%; text-align: right;word-wrap:break-word}
 .line{border-bottom: 3px #000 dashed; font-size: 0; margin:10px 0;}
-.total{text-align: right;}
+.total{text-align: right; clear: both; overflow: hidden;}
 .total .user{float: left;}
 .total .money{float: right;}
 </style>
