@@ -287,7 +287,7 @@ export default {
 			invoiced:[],
 			invoiceList:[],
 			userParam:{page:1,keyword:'',total:0},
-			stock:'web',
+			stock:'shop',
 			member:'',
 			stockOpt: [{
               value: 'web',
@@ -356,7 +356,7 @@ export default {
             })
 		},
 		setStock(value){
-			//window.sessionStorage.setItem('stock', value);
+			window.sessionStorage.setItem('stock', value);
 		},
         searchGoods(keyword){
 			let that = this;
@@ -762,7 +762,7 @@ export default {
 .el-aside{box-sizing: border-box;background: #f7f7f7;}
 .el-main{height: 100%; box-sizing: border-box;}
 .el-footer{box-sizing: border-box; background: #f1f1f1}
-.main{width: 100%; padding: 10px; box-sizing: border-box;}
+.main{width: 100%; padding: 10px; box-sizing: border-box; height:500px;}
 .moneyBox{clear: both; padding-top: 5px}
 .moneyBox li{clear: both; width: 100%; line-height: 23px}
 .moneyBox li label{float: left; font-size: 12px; width: 80px; color: #666}
