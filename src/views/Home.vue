@@ -227,7 +227,7 @@
                                 <el-switch v-model="dai" on-value="1" off-value="0" @change="setDai"></el-switch>
 								</li>
 
-								<li>
+								<li v-show="stockShow">
 								<el-select v-model="stock" placeholder="请选择仓库" size="mini" style="width:100px" @change="setStock">
 									<el-option
 									v-for="item in stockOpt"
@@ -288,6 +288,7 @@ export default {
 			invoiceList:[],
 			userParam:{page:1,keyword:'',total:0},
 			stock:'shop',
+			stockShow:false,
 			member:'',
 			stockOpt: [{
               value: 'web',
@@ -322,7 +323,14 @@ export default {
     },
     methods: {
         init(){			
-            this.user = JSON.parse(this.$store.state.user);
+			this.user = JSON.parse(this.$store.state.user);
+			if(this.user.stock==1){
+				this.stock = 'shop';
+			}else if(this.user.stock==2){
+				this.stock = 'web';
+			}else{
+				this.stockShow = true;
+			}
             this.getAllInfo();
             let orderID = this.$route.query.orderID;
             if (orderID!='' && orderID!=undefined){
