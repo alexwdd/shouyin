@@ -28,6 +28,11 @@
 						width="80">
 						</el-table-column>
 						<el-table-column
+						prop="pifaPrice"
+						label="批发价"
+						width="80">
+						</el-table-column>
+						<el-table-column
                         prop="stock"					
                         label="库存"
                         width="60"
@@ -134,6 +139,7 @@
                         width="100"
                         >
                         </el-table-column>
+
 						<el-table-column
                         label="价格"
                         width="100">
@@ -141,13 +147,23 @@
                             <el-input @blur="changePrice(scope.row)" v-model="scope.row.price" size="mini"></el-input>
                         </template>
                         </el-table-column>
+
                         <el-table-column					
                         label="会员价"
                         width="100">
                         <template scope="scope">
                             <el-input @blur="changePrice(scope.row)" v-model="scope.row.price1" size="mini"></el-input>
                         </template>
-                        </el-table-column>						
+                        </el-table-column>	
+
+						<el-table-column					
+                        label="批发价"
+                        width="100">
+                        <template scope="scope">
+                            <el-input @blur="changePrice(scope.row)" v-model="scope.row.pifaPrice" size="mini"></el-input>
+                        </template>
+                        </el-table-column>	
+
                         <el-table-column
                         prop="danjia"					
                         label="带走价"
@@ -217,12 +233,12 @@
                         </el-col>
                         <el-col :span="11">
                             <div class="action" style="margin-top: 40px">
-								<li>
+								<li v-show="!pifaShow">
                                 会员价
                                 <el-switch v-model="vip" on-value="1" off-value="0" @change="setVip"></el-switch>
 								</li>
 
-								<li>
+								<li v-show="!pifaShow">
 								带走
                                 <el-switch v-model="dai" on-value="1" off-value="0" @change="setDai"></el-switch>
 								</li>
@@ -289,6 +305,7 @@ export default {
 			userParam:{page:1,keyword:'',total:0},
 			stock:'shop',
 			stockShow:false,
+			pifaShow:false,
 			member:'',
 			stockOpt: [{
               value: 'web',
@@ -330,6 +347,12 @@ export default {
 				this.stock = 'web';
 			}else{
 				this.stockShow = true;
+			}
+
+			if(this.user.pifa==1){
+				this.pifaShow = true;
+			}else{
+				this.pifaShow = false;
 			}
             this.getAllInfo();
             let orderID = this.$route.query.orderID;
@@ -394,6 +417,7 @@ export default {
 			data.wuliuWeight = row.wuliuWeight;
 			data.price = row.price;
 			data.price1 = row.price1;
+			data.pifaPrice = row.pifaPrice;
 			data.inprice = row.inprice;
 			data.gst = row.gst;
 			data.number = row.number;
@@ -459,11 +483,16 @@ export default {
 			for(var i in that.cart){
 				that.cart[i]['weight'] = (that.cart[i]['wuliuWeight']*that.cart[i]['number']).toFixed(2);
 				totalWeight += that.cart[i]['wuliuWeight']*that.cart[i]['number'];
-				if (this.vip==true){
-					danjia = that.cart[i]['price1'];
+				console.log(that.user);
+				if(that.user.pifa==1){
+					danjia = that.cart[i]['pifaPrice'];
 				}else{
-					danjia = that.cart[i]['price'];
-				}
+					if (this.vip==true){
+						danjia = that.cart[i]['price1'];
+					}else{
+						danjia = that.cart[i]['price'];
+					}
+				}				
 				if (this.dai==true && that.cart[i]['gst']==1){
 					danjia = (danjia*1.1).toFixed(2);	
 				}
