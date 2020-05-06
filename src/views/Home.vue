@@ -4,7 +4,7 @@
             <el-aside width="30%">
 				<div class="main" style="padding-top: 20px">
 					<el-input v-model="keyword" placeholder="请输入商品关键词或编号"></el-input>
-
+					<template v-if="user.pifa==1">
 					<el-table :data="goods" @row-click="insertGoods" style="width: 100%;margin-top: 20px">
 						<el-table-column
 						prop="id"
@@ -16,16 +16,6 @@
 						prop="name"
 						label="名称"
 						>
-						</el-table-column>
-						<el-table-column
-						prop="price"
-						label="价格"
-						width="80">
-						</el-table-column>
-						<el-table-column
-						prop="price1"
-						label="会员价"
-						width="80">
 						</el-table-column>
 						<el-table-column
 						prop="pifaPrice"
@@ -47,6 +37,46 @@
                         >
                         </el-table-column>
 					</el-table>
+					</template>
+					<template v-else>
+					<el-table :data="goods" @row-click="insertGoods" style="width: 100%;margin-top: 20px">
+						<el-table-column
+						prop="id"
+						label="编号"
+						width="50"
+						>
+						</el-table-column>
+						<el-table-column
+						prop="name"
+						label="名称"
+						>
+						</el-table-column>
+						<el-table-column
+						prop="price"
+						label="价格"
+						width="80">
+						</el-table-column>
+						<el-table-column
+						prop="price1"
+						label="会员价"
+						width="80">
+						</el-table-column>	
+						<el-table-column
+                        prop="stock"					
+                        label="库存"
+                        width="60"
+						v-if="stock=='web'"
+                        >
+                        </el-table-column>
+						<el-table-column
+                        prop="stock1"					
+                        label="库存"
+                        width="60"
+						v-if="stock=='shop'"
+                        >
+                        </el-table-column>
+					</el-table>
+					</template>	
 				</div>
 			</el-aside>
 
@@ -127,7 +157,51 @@
 						</el-pagination>
 					</el-dialog>
 
+					<template v-if="user.pifa==1">
                     <el-table :data="cart" border style="width: 100%">
+                        <el-table-column
+                        prop="name"
+                        label="名称"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                        prop="weight"			
+                        label="重量"
+                        width="100"
+                        >
+                        </el-table-column>
+
+						<el-table-column					
+                        label="批发价"
+                        width="100">
+                        <template scope="scope">
+                            <el-input @blur="changePrice(scope.row)" v-model="scope.row.pifaPrice" size="mini"></el-input>
+                        </template>
+                        </el-table-column>
+
+         
+						<el-table-column
+                        prop="money"					
+                        label="小计"
+                        width="100"
+                        >
+                        </el-table-column>                     						
+                        <el-table-column label="商品数量" width="150">
+                            <template scope="scope">
+                                <el-input-number @blur="changeNumber(scope.row)" @change="changeNumber(scope.row)" size="mini" v-model="scope.row.number" :min="1" ></el-input-number>
+                            </template>
+                        </el-table-column>
+                        <el-table-column		
+                            label="操作"
+                            width="50">
+                            <template slot-scope="scope">
+                            <el-button @click="delGoods(scope.$index)" type="text" size="small">删除</el-button>
+                            </template>
+                            </el-table-column>
+                    </el-table>
+					</template>
+					<template v-else>
+					<el-table :data="cart" border style="width: 100%">
                         <el-table-column
                         prop="name"
                         label="名称"
@@ -156,14 +230,6 @@
                         </template>
                         </el-table-column>	
 
-						<el-table-column					
-                        label="批发价"
-                        width="100">
-                        <template scope="scope">
-                            <el-input @blur="changePrice(scope.row)" v-model="scope.row.pifaPrice" size="mini"></el-input>
-                        </template>
-                        </el-table-column>	
-
                         <el-table-column
                         prop="danjia"					
                         label="带走价"
@@ -189,7 +255,7 @@
                             </template>
                             </el-table-column>
                     </el-table>
-
+					</template>
                     <el-card class="box-card" style="margin-top: 15px">
                         <div slot="header" class="clearfix">
                             <span>支付方式</span>
