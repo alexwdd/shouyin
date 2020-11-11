@@ -10,6 +10,7 @@ export default new Vuex.Store({
 		member:'',
 		order:{},
 		invoiced:{},
+		bankcard:{},
 		flag:false,
 		cart:[]
 	},
@@ -42,6 +43,10 @@ export default new Vuex.Store({
 		},
 		SET_INVOICED(state,data) {
 			state.invoiced = data;
+		},
+		SET_BANKCARD(state,data) {
+			state.bankcard = data;
+			window.sessionStorage.setItem('bankcard', JSON.stringify(data));
 		},
 		SET_CART(state,data) {
 			state.cart = data;

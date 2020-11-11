@@ -323,6 +323,10 @@
 								<li>
 								<el-button size="mini" @click="selectInvoiced">{{invoiced.name|empty('选择付款人')}}</el-button>								
 								</li>
+								
+								<li>
+								<el-button size="mini" @click="selectBankcard">{{bankcard.name|empty('选择收款账户')}}</el-button>								
+								</li>								
                             </div>							
                         </el-col>
                         <el-col :span="8">
@@ -335,6 +339,23 @@
                         </el-col>
                     </el-row>
                 </el-footer>
+				<el-dialog title="收款账户" size="mini" :visible.sync="dialogBankVisible">
+					<el-table :data="bankcardList">
+					<el-table-column property="company" label="公司"></el-table-column>
+					<el-table-column property="abn" label="ABN"></el-table-column>	
+					<el-table-column property="bank" label="银行"></el-table-column>	
+					<el-table-column property="name" label="姓名"></el-table-column>																	
+					<el-table-column property="bsb" label="BSB"></el-table-column>														
+					<el-table-column property="number" label="卡号"></el-table-column>														
+					<el-table-column		
+					label="操作"
+					width="100">
+					<template slot-scope="scope">
+					<el-button @click="onClickBankcard(scope.row)" type="text" size="small">选择</el-button>
+					</template>
+					</el-table-column>
+					</el-table>				
+				</el-dialog>
             </el-container>
         </el-container>
     </div>
@@ -366,8 +387,14 @@ export default {
 			multPay:false,
 			payType:'',
 			pay_opt: [], //支付方式选项
+			
 			invoiced:[],
 			invoiceList:[],
+			
+			dialogBankVisible:false,
+			bankcard:[],
+			bankcardList:[],
+			
 			userParam:{page:1,keyword:'',total:0},
 			stock:'shop',
 			stockShow:false,
@@ -402,6 +429,9 @@ export default {
 		if(window.sessionStorage.getItem('stock')){
 			this.stock = window.sessionStorage.getItem('stock');
 		}
+		if(window.sessionStorage.getItem('bankcard')){
+			this.bankcard = JSON.parse(window.sessionStorage.getItem('bankcard'));
+		}
         this.init();
     },
     methods: {
@@ -425,7 +455,7 @@ export default {
             if (orderID!='' && orderID!=undefined){
                 this.orderID = orderID;
                 this.createOrder(orderID);
-            }
+            }	
         },
         getAllInfo(){
 			if (this.$store.state.token=='' || this.$store.state.token==undefined){
@@ -503,14 +533,14 @@ export default {
 	        that.cart = list;
 	        this.getTotalPrice();			
 		},
-		selectInvoiced(value){
+		/* selectInvoiced(value){
 	        for(var i in this.invoiced_opt){
 	            if(this.invoiced_opt[i]['id']!=value.id){
 					this.invoiced = this.invoiced_opt[i];
 					this.$store.commit("SET_INVOICED",this.invoiced);
 	            }
 			}
-		},
+		}, */
         changeWeight(){
 			this.getTotalPrice();
 		},
@@ -684,6 +714,10 @@ export default {
 				});
 				return false;
 			}
+			if(this.bankcard.company=='' || this.bankcard.company==undefined){
+				this.$alert('请选择收款账户',{type:'error'});
+				return false;
+			}
 			this.$router.push({ path:'/dapiao'});
 		},
 		doSubmit(){
@@ -809,6 +843,38 @@ export default {
 			that.order = [];
 			this.dialogTableVisible = false;
 			this.getTotalPrice();
+		},
+		selectBankcard(){
+			this.dialogBankVisible = true;
+			if (this.$store.state.token=='' || this.$store.state.token==undefined){
+				return false;
+			}
+			let loadding = Loading.service();
+			let data = {
+				token:this.$store.state.token,
+			};
+			this.$http.post('/bankcard',data).then((res)=>{
+			　　loadding.close();
+			    res = res.data;
+			    if (res.code==1){
+			        this.bankcardList = res.body.data;
+			    }else if(res.code==9001){
+					this.$alert(res.desc,{
+						type:'error',
+						callback: action => {
+				            this.$store.commit('SIGN_OUT');
+							this.$router.push({ path:'/login'});
+				        }
+					});										
+				}else if(res.code==0){
+					this.$alert(res.desc,{type:'error'});
+				}
+			})
+		},
+		onClickBankcard(row){
+			this.bankcard = row;
+			this.dialogBankVisible = false;
+			this.$store.commit("SET_BANKCARD",row);
 		},
 		selectInvoiced(){
 			this.dialogUserVisible = true;

@@ -2,9 +2,9 @@
 	<table class="myTable">
 		<tr>
 			<td style="width: 50%">
-				<div class="company">Train Exporting Pty Ltd</div>
-				<div class="info">Unit 1 140 Ashley St Underdale SA 5032</div>
-            	<div class="info">ABN:71 623 342 432</div>
+				<div class="company">{{bankcard.company}}</div>
+				<div class="info">{{bankcard.address}}</div>
+            	<div class="info">ABN:{{bankcard.abn}}</div>
 			</td>
 			<td>
 				<div class="company text-right">TAX INVOICE</div>
@@ -19,10 +19,10 @@
 		<tr>
 			<td style="width: 50%"><el-input v-model="kaipiao" type="textarea" :rows="5"></el-input></td>
 			<td>
-				<p>Commonwealth Bank</p>
-				<p>Name: Train Exporting</p>
-				<p>BSB: 065 000</p>
-				<p>Account Number: 12334607</p>
+				<p>{{bankcard.bank}}</p>
+				<p>Name: {{bankcard.name}}</p>
+				<p>BSB: {{bankcard.bsb}}</p>
+				<p>Account Number: {{bankcard.number}}</p>
 			</td>
 		</tr>
 		<tr>
@@ -67,6 +67,7 @@ export default {
 	data(){
 		return {
 			info:{},
+			bankcard:{},
 			invoiced:[],
 			kaipiao:''
 		}
@@ -75,11 +76,17 @@ export default {
     	$route(to,from){
 		    if (to.path=='/dapiao') {
 		    	this.getOrderInfo();
+				if(window.sessionStorage.getItem('bankcard')){
+					this.bankcard = JSON.parse(window.sessionStorage.getItem('bankcard'));
+				}
 		    }
 		}
     },
 	created(){
 		this.getOrderInfo();
+		if(window.sessionStorage.getItem('bankcard')){
+			this.bankcard = JSON.parse(window.sessionStorage.getItem('bankcard'));
+		}
 	},
 	methods:{
 		getOrderInfo(){
